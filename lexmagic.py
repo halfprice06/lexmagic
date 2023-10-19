@@ -5,8 +5,9 @@ import openai  # for using GPT and getting embeddings
 import os  # for loading environment variables
 import requests  # for making the API requests
 import urllib.parse
-
 from datetime import date, timedelta  # for getting the current date
+from nicegui import ui
+
 
 # Load environment variables
 court_listener_api_key = "79e0928da97eecf335279f4a03042aa3e4023761"
@@ -46,7 +47,7 @@ Generate an array of search queries that are relevant to this question.
 Use a variation of related keywords for the queries, trying to be as general as possible.
 Include as many queries as you can think of, including and excluding terms.
 For example, include queries like ['keyword_1 keyword_2', 'keyword_1', 'keyword_2'].
-Be creative. Include about 5 - 10 queries.
+Be creative. Include at most 5 queries.
 
 User question: {USER_QUESTION}
 

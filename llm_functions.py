@@ -8,7 +8,7 @@ from openpyxl.utils import get_column_letter
 import os
 import json
 from datetime import datetime
-from serpapi import GoogleSearch
+# from serpapi import GoogleSearch
 
 
 config_file = "config.yaml"
@@ -51,13 +51,13 @@ FUNCTIONS=[
     },
     {
         "name": "vector_search_civil_code",
-        "description": "Search for articles based on a query and return top N results. Rewrite the user's question as if it were the content of a civil code article so it is more likely to match the content of the articles via semantic vector embeddings search.",
+        "description": "Search for articles based on a query and return top N results. To aid vector search, take the user's question and rewrite it as a hypothetical answer to increase likelihood of vector search match.",
         "parameters": {
             "type": "object",
             "properties": {
                 "query": {
                     "type": "string",
-                    "description": "The user's query. Rewrite the user's question as if it were the content of a civil code article so it is more likely to match the content of the articles via semantic vector embeddings search."
+                    "description": "Take the user's question and write a one or two sentence hypothetical answer to the question."
                 },
                 "top_n_number": {
                     "type": "integer",
