@@ -8,7 +8,7 @@ from openpyxl.utils import get_column_letter
 import os
 import json
 from datetime import datetime
-# from serpapi import GoogleSearch
+from serpapi import GoogleSearch
 
 
 config_file = "config.yaml"
@@ -19,6 +19,37 @@ with open(config_file, 'r') as file:
 
 api_key_serpapi = config['api_keys']['serpapi']
 monday_api_key = config['api_keys']['monday']
+
+INTERNET_FUNCTIONS = [
+    {
+        "name": "search",
+        "description": "When the user is asking for information you need to google, search for a query and return results",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {
+                    "type": "string",
+                    "description": "The search query"
+                }
+            },
+            "required": ["query"],
+        },
+    },
+    {
+        "name": "web_scrape",
+        "description": "Scrape the content from a given URL using BeautifulSoup. Useful if you want to follow up on a search query with more information from a specific website.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "url": {
+                    "type": "string",
+                    "description": "The URL to scrape"
+                }
+            },
+            "required": ["url"],
+        },
+    }
+]
 
 FUNCTIONS=[
     {

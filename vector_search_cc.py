@@ -1,5 +1,4 @@
 def vector_search_civil_code(query, top_n_number=10):
-    import csv
     import chromadb
     import sqlite3
     import logging
@@ -20,21 +19,6 @@ def vector_search_civil_code(query, top_n_number=10):
     ''')
     conn.commit()
 
-    # Function to read the CSV and prepare documents, metadatas, and ids
-    def read_csv_data(filepath):
-        documents = []
-        metadatas = []
-        ids = []
-
-        with open(filepath, 'r') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                documents.append(row['article_content'])
-                metadatas.append({"article_title": row['article_title']})
-                ids.append(row['article_number'])
-
-        return documents, metadatas, ids
-
     # Initialize Chroma Client and load existing database
     chroma_client = chromadb.PersistentClient("vdb")
 
@@ -52,38 +36,16 @@ def vector_search_civil_code(query, top_n_number=10):
 
     # Prepare the output string
     output = ""
+    top_articles = []
 
     # Loop through the extracted lists
     for idx, doc, meta, dist in zip(ids_list, documents_list, metadatas_list, distances_list):
 
-        # Get the index of the current article in the ids list
-        current_index = ids_list.index(idx)
-
-        # Get the articles before and after the current article
-        before_articles = ids_list[max(0, current_index - 2):current_index]
-        after_articles = ids_list[current_index + 1:min(len(ids_list), current_index + 3)]
-
-        # Add the before articles to the output only for the top result
-        if idx == ids_list[0]:
-            for before_article in before_articles:
-                output += f"Article Number: {before_article}\n"
-                output += f"Article Title: {metadatas_list[ids_list.index(before_article)].get('article_title')}\n"
-                output += f"Content: {documents_list[ids_list.index(before_article)]}\n"
-                output += "-" * 50 + "\n"
-
         # Add the current article to the output
-        output += f"Article Number: {idx}\n"
-        output += f"Article Title: {meta.get('article_title')}\n"
+        output += f"La. Civil Code Article {idx} - {meta.get('article_title')}\n"
         output += f"Content: {doc}\n"
-        output += "-" * 50 + "\n"
-
-        # Add the after articles to the output only for the top result
-        if idx == ids_list[0]:
-            for after_article in after_articles:
-                output += f"Article Number: {after_article}\n"
-                output += f"Article Title: {metadatas_list[ids_list.index(after_article)].get('article_title')}\n"
-                output += f"Content: {documents_list[ids_list.index(after_article)]}\n"
-                output += "-" * 50 + "\n"
+        output +=  "\n\n"
+        top_articles.append(f"La. Civil Code Article {idx} - {meta.get('article_title')}\n{doc}")
 
         # Insert the result into the SQLite database
         c.execute('''
@@ -92,7 +54,7 @@ def vector_search_civil_code(query, top_n_number=10):
         ''', (idx, doc, meta.get('article_title'), dist, query))
     conn.commit()
 
-    return output
+    return output, top_articles
 
 
 def repl():
