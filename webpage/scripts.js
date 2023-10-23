@@ -12,7 +12,7 @@ async function submitQuery() {
             // Handle the case where the bot needs more information
         } else {
             document.getElementById('output').innerText = data.response;
-            document.getElementById('documents').innerText = data.documents.join('\n');  // Display the top 10 results
+            document.getElementById('directory').innerText = data.documents.join('\n');  // Display the top 10 results
         }
     };
     
@@ -21,3 +21,20 @@ async function submitQuery() {
         document.getElementById('documents').innerText = '';
     };
 }
+
+function thumbsUp() {
+    // Placeholder for thumbs up action
+    console.log("Thumbs up clicked");
+}
+
+function thumbsDown() {
+    // Placeholder for thumbs down action
+    console.log("Thumbs down clicked");
+}
+
+document.getElementById('toggleButton').addEventListener('click', function() {
+    var directory = document.querySelector('.directory-section');
+    var container = document.querySelector('.container');
+    directory.classList.toggle('open');
+    container.classList.toggle('with-directory');
+});

@@ -3,11 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Query System</title>
+    <title>Chat with the Civil Code</title>
     <link rel="stylesheet" href="styles.css">
     <style>
-        #output, #documents {
+        #output, #documents, #directory {
             text-align: justify;
+        }
+        .thumbs {
+            text-align: center;
+        }
+        .directory_toggle {
+            text-align: center;
+        }
+        .query-section {
+            text-align: center;
+        }
+        .directory-header {
+            text-align: center;
         }
     </style>
 </head>
@@ -16,16 +28,30 @@
         <h1>Chat With the Civil Code</h1>
         <div class="query-section">
             <input type="text" id="question" placeholder="Enter your question about the civil code...">
-            <button onclick="submitQuery()">Ask</button>
+            <div class= "ask_button">
+                <button onclick="submitQuery()">Ask</button>
+            </div>            
         </div>
         <div class="response-section">
             <h2>Answer</h2>
             <p id="output">Your answer will appear here.</p>
+            <div class="thumbs">
+                <button onclick="thumbsUp()">👍</button>
+                <button onclick="thumbsDown()">👎</button>
+            </div>
         </div>
         <div class="documents-section">
-            <h2>Relevant Civil Code Articles</h2>
-            <p id="documents">Relevant documents will be displayed here.</p>
+            <h2></h2>
+            <div class="directory_toggle">
+                <button id="toggleButton">Show Relevant Articles</button>
+            </div>
         </div>
+    </div>
+    <div class="directory-section">
+        <div class ="directory-header">
+            <h2>Relevant Civil Code Articles</h2>
+        </div>
+        <p id="directory">Relevant articles will be displayed here.<p>
     </div>
     <script src="scripts.js"></script>
 </body>
