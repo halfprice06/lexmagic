@@ -9,9 +9,12 @@ from datetime import date, timedelta  # for getting the current date
 from nicegui import ui
 
 
-# Load environment variables
-court_listener_api_key = "79e0928da97eecf335279f4a03042aa3e4023761"
-openai.api_key = "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"
+# Load keys from config.yaml
+with open("config.yaml", 'r') as file:
+    config = yaml.safe_load(file)
+
+court_listener_api_key = config['api_keys']['court_listener']
+openai.api_key = config['api_keys']['openai']
 
 
 GPT_MODEL = "gpt-4"
