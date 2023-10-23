@@ -106,7 +106,6 @@ button:hover {
 }
 
 #progress-bar {
-    margin: auto;
     background-color: #e74c3c;
     height: 5px;
     width: 0%;
