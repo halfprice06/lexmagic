@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, WebSocket
 from pydantic import BaseModel
 from chat_with_civil_code import PersonalityBot
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,12 +16,18 @@ app.add_middleware(
 class Prompt(BaseModel):
     text: str
 
-@app.post("/chat")
-async def chat(prompt: Prompt):
+@app.websocket("/ws")
+async def chat(websocket: WebSocket):
     bot = PersonalityBot()
-    try:
-        response, top_10_results = bot.chat_completion(prompt.text)
-    except Exception as e:
-        print(f"Error: {e}")  # Log the original error message
-        raise HTTPException(status_code=500, detail=str(e))
-    return {"response": response, "documents": top_10_results}
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_json()
+        try:
+            final_reply, top_10_results = bot.chat_completion(data['text'])
+            if bot.needs_more_info == True:  # If the bot needs more information
+                await websocket.send_json({"response": "NEED_MORE_INFO"})
+            else:
+                await websocket.send_json({"response": final_reply, "documents": top_10_results})
+        except Exception as e:
+            print(f"Error: {e}")  # Log the original error message
+            await websocket.send_json({"error": str(e)})

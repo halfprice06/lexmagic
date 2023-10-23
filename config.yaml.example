@@ -1,0 +1,10 @@
+api_keys:
+  elevenlabs: 
+  openai: 
+  serpapi: 
+  court_listener: 
+settings:
+  model: gpt-4
+  text_to_speech: false
+  persona: Clyde
+  voice: Clyde

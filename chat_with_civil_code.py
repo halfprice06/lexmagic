@@ -17,6 +17,8 @@ class PersonalityBot:
     def __init__(self, config_file="config.yaml"):
         self.config_file = config_file
 
+        self.needs_more_info = False
+
         # Load the configuration from the YAML file
         with open(config_file, 'r') as file:
             config = yaml.safe_load(file)
@@ -54,7 +56,7 @@ class PersonalityBot:
 
     def get_system_message(self):
 
-        message = "You are a chatbot that can search a vector embeddings database with embeddings of the Louisiana Civil Code to answer legal questions for the user. When the user asks you a question about Louisiana law, use the vector search function to search the Civil Code. To aid vector search, take the user's question and rewrite it as a hypothetical answer to increase likelihood of vector search match. The search will return to you the top 10 most similar articles, use those articles to generate a response to the user. If the vector search results do not directly answer the question, ask the user to rephrase their question. Always cite the article number in your response. If the user asks you a question that is not about Louisiana law, you can use the default chatbot function. Always use inline citations in the format 'Explanatory sentence. La. C.C. art. 123' " 
+        message = "You are a chatbot that can search a vector embeddings database with embeddings of the Louisiana Civil Code to answer legal questions for the user. When the user asks you a question about Louisiana law, use the vector search function to search the Civil Code. To aid vector search, take the user's question and rewrite it as a hypothetical answer to increase likelihood of vector search match. The search will return to you the top 10 most similar articles, use those articles to generate a response to the user. If the vector search results do not directly answer the question, ask the user to rephrase their question. Always cite the article number in your response. If the user asks you a question that is not about Louisiana law, you can use the default chatbot function. Always use inline citations in the format 'Explanatory sentence. La. C.C. art. 123' Don't put the article in parentheses." 
         return message
 
         
@@ -62,86 +64,153 @@ class PersonalityBot:
         self.conversation_history.append({"role": "user", "content": prompt})
         messages = [{"role": "system", "content": self.system_message}]
         messages += self.conversation_history
-
-        print(f"\n\033[92m{self.persona}: \033[0m", end="")
         
         functions_used = []
 
         reply = ""
         top_10_results = []  # Initialize top_10_results here
                     
-        while True:
-            max_tokens_value = 1000
+        max_tokens_value = 1000
 
-            print('hi')
+        classifier_completion = openai.ChatCompletion.create(
+            model=self.model,
+            messages=[{"role": "system", "content": "The user is going to ask you a question about Louisiana law. Decide whether you need more information to answer the question first. Always assume the question is about Louisiana law unless the user mentions otherwise."},
+                        {"role": "user", "content": f"{prompt}"}],
+            functions=FUNCTIONS,
+            function_call={"name": "classify_question"}
+        )
 
-            # internet_completion = openai.ChatCompletion.create(
-            #     model=self.model,
-            #     max_tokens=1000,
-            #     functions=INTERNET_FUNCTIONS,
-            #     messages=[{"role": "system", "content": "The user is going to ask you a question about Louisiana law. Use an internet search to try and gather the answer."},
-            #               {"role": "user", "content": prompt}],
-            #     function_call="auto"
-            # )
+        classifier_response = classifier_completion.choices[0].message
 
-            # internet_response = internet_completion.choices[0].message
+        if classifier_response.get("function_call"):
+            function_name = classifier_response["function_call"]["name"]
+            function_args = json.loads(classifier_response["function_call"]["arguments"])
+            function_to_call = getattr(llm_functions, function_name, None)
 
-            raw_completion = openai.ChatCompletion.create(
-                model=self.model,
-                max_tokens=1000,
-                messages=[{"role": "system", "content": "The user is going to ask you a question about Louisiana law. Answer succinctly."},
-                          {"role": "user", "content": prompt}],
-            )
-
-            raw_response = raw_completion.choices[0].message
-
-            completion = openai.ChatCompletion.create(
-                model=self.model,
-                max_tokens=max_tokens_value,
-                messages=messages,
-                functions=FUNCTIONS,
-                function_call="auto",
-            )
-
-            response = completion.choices[0].message
-            
-            if response.get("function_call"):
-                function_name = response["function_call"]["name"]
-                function_args = json.loads(response["function_call"]["arguments"])
-                function_to_call = getattr(llm_functions, function_name, None)
-
-                if function_to_call is None:
-                    function_to_call = getattr(vector_search_cc, function_name, None)
-
-                if function_to_call is None:
-                    print("Function not found.")
-
-                else:
-                    function_response = function_to_call(**function_args)
-                    
-                    # If the function called is vector_search_civil_code, assign the second element of the response to top_10_results
-                    if function_name == "vector_search_civil_code":
-                        function_response, top_10_results = function_response
-                        
-                functions_used.append({"name": function_name, "arguments": function_args})
-
-                # Check if the same function is being called more than three times in a row
-                if len(functions_used) >= 3 and function_name == functions_used[-2]["name"] == functions_used[-3]["name"]:
-                    print("The same function has been called more than three times in a row. Breaking the loop.")
-                    break
-
-                messages += [
-                    {"role": "function", "name": function_name, "content": f"Raw ChatPGT Response without help of vector embedding: \n\n {raw_response} \n\n Internet Results: \n\n  \n\n Vector Results: \n\n {function_response}"},
-                ]
-
-                print(messages)
+            if function_to_call is None:
+                print("Function not found.")
 
             else:
-                reply = response['content']
-                print(reply + "\n")
+                classifier_function_response = function_to_call(**function_args)
+                    
+            functions_used.append({"name": function_name, "arguments": function_args})
 
-                break
+            print(classifier_function_response)
 
+            extra_context_from_user = ""
+
+            if classifier_function_response == "No":
+                print("We have all the information we need to answer the question.")
+
+            else:
+                follow_up_classifier_completion = openai.ChatCompletion.create(
+                    model=self.model,
+                    messages=[{"role": "system", "content": "The user is going to ask you a question about Louisiana law, but you need more information. Ask the user for the specific information you need to answer the question."},
+                                {"role": "user", "content": f"{prompt}"}],
+                )
+
+                follow_up_classifier_response = follow_up_classifier_completion.choices[0].message
+
+                print(follow_up_classifier_response)
+
+                # TO DO - Figure out how to get this input from the webpage
+
+                extra_context_from_user = input("\033[94mYou: \033[0m")
+
+
+        raw_completion = openai.ChatCompletion.create(
+            model=self.model,
+            max_tokens=1000,
+            messages=[{"role": "system", "content": "The user is going to ask you a question about Louisiana law. Answer completely."},
+                        {"role": "user", "content": "Original question:" + prompt + "Additional context:" + extra_context_from_user}],
+        )
+
+        raw_response = raw_completion.choices[0].message
+
+        print("GPT4's raw attempt at answering the question: \n")
+        print(raw_response)
+
+        internet_completion = openai.ChatCompletion.create(
+            model=self.model,
+            max_tokens=1000,
+            functions=FUNCTIONS,
+            messages=[{"role": "system", "content": "The user is going to ask you a question about Louisiana law. Use an internet search to try and gather the answer."},
+                        {"role": "user", "content": f"{prompt} + {extra_context_from_user} + Louisiana law"}],
+            function_call={"name": "search"}
+        )
+
+        internet_response = internet_completion.choices[0].message
+
+        if internet_response.get("function_call"):
+            function_name = internet_response["function_call"]["name"]
+            function_args = json.loads(internet_response["function_call"]["arguments"])
+            function_to_call = getattr(llm_functions, function_name, None)
+
+            if function_to_call is None:
+                print("Function not found.")
+
+            else:
+                function_response = function_to_call(**function_args)
+                    
+            functions_used.append({"name": function_name, "arguments": function_args})
+
+            # Summarize the function response using llm
+            summary_completion = openai.ChatCompletion.create(
+                model=self.model,
+                max_tokens=1000,
+                messages=[{"role": "system", "content": "The user is going to ask you a question about Louisiana law. Take the internet serp results and snippets and try to answer the question."},
+                            {"role": "user", "content": f"User Question: {prompt} + {extra_context_from_user} \n Internet Serp Results: \n {function_response}]"}])
+
+            summary_response = summary_completion.choices[0].message
+
+        internet_reply = summary_response['content']
+
+        print("GPT4's summary of internet search results: \n")
+        print(internet_reply)
+
+        messages += [{"role": "user", "content": f"A previous GPT4 instance answered the user's question ({prompt} + {extra_context_from_user}) as: \n\n {raw_response}. Another instance summarized the internet's answer to the question as: \n\n {internet_reply}"}]
+
+        completion = openai.ChatCompletion.create(
+            model=self.model,
+            max_tokens=max_tokens_value,
+            messages=messages,
+            functions=FUNCTIONS,
+            function_call={"name": "vector_search_civil_code"},
+        )
+
+        response = completion.choices[0].message
+        
+        if response.get("function_call"):
+            function_name = response["function_call"]["name"]
+            function_args = json.loads(response["function_call"]["arguments"])
+            function_to_call = getattr(vector_search_cc, function_name, None)
+
+            if function_to_call is None:
+                print("Function not found.")
+
+            else:
+                function_response = function_to_call(**function_args)
+                
+                # If the function called is vector_search_civil_code, assign the second element of the response to top_10_results
+                if function_name == "vector_search_civil_code":
+                    function_response, top_10_results = function_response
+                    
+            functions_used.append({"name": function_name, "arguments": function_args})
+
+            messages = [
+                {"role": "system", "content": f"You are a legal answering service. You are going to be given context from GPT4, the internet, and a semantic search of the Louisiana Civil Code. Use the context to answer the user's question: \n {prompt} + {extra_context_from_user} \n. ALWAYS GIVE THE CIVIL CODE ARTICLES THE MOST WEIGHT WHEN ANSWERING THE QUESTION. The raw GPT4 response may include hallucinations. If the user asks you a question that is not about Louisiana law, you can just answer normally. If the answer does not appear to be in the Vector Results you don't have to mention any specific code articles. DO NOT ASSUME THAT JUST BECAUSE YOU ARE GIVEN A CIVIL CODE ARTICLE FOR CONTEXT IT IS RELEVANT TO THE USER'S QUESTION. Always use inline citations in the following format 'Explanatory sentence. La. C.C. art. 123' Don't put the article in parentheses." },
+                {"role": "user", "content": f"Raw ChatPGT Response without help of vector embedding: \n\n {raw_response} \n\n Internet Results: \n\n {internet_reply}  \n\n Vector Results: \n\n {function_response}"},
+            ]
+
+        final_completion = openai.ChatCompletion.create(
+            model=self.model,
+            messages=messages,
+            )
+        
+        final_reply = final_completion.choices[0].message['content']
+
+        print("Final reply: \n")
+        print(final_reply)
         
         for func_info in functions_used:
             print('\033[92m' + "Function used: " + func_info["name"] + '\033[0m')
@@ -149,7 +218,7 @@ class PersonalityBot:
 
         self.conversation_history.append({"role": "assistant", "content": reply})
         self.system_message = self.get_system_message()
-        return reply, top_10_results
+        return final_reply, top_10_results
 
     def generate_audio(self, text_stream):
         audio_stream = elevenlabs.generate(

@@ -18,9 +18,8 @@ with open(config_file, 'r') as file:
     config = yaml.safe_load(file)
 
 api_key_serpapi = config['api_keys']['serpapi']
-monday_api_key = config['api_keys']['monday']
 
-INTERNET_FUNCTIONS = [
+INTERNET_FUNCTIONS=[
     {
         "name": "search",
         "description": "When the user is asking for information you need to google, search for a query and return results",
@@ -47,7 +46,7 @@ INTERNET_FUNCTIONS = [
                 }
             },
             "required": ["url"],
-        },
+        }
     }
 ]
 
@@ -82,13 +81,13 @@ FUNCTIONS=[
     },
     {
         "name": "vector_search_civil_code",
-        "description": "Search for articles based on a query and return top N results. To aid vector search, take the user's question and rewrite it as a hypothetical answer to increase likelihood of vector search match.",
+        "description": "Search for articles based on a query and return top N results. To aid vector search, take the user's question and rewrite it as a hypothetical answer to increase likelihood of vector search match. Write the answer in the style of a sentence that might appear in the Louisiana Civil Code.",
         "parameters": {
             "type": "object",
             "properties": {
                 "query": {
                     "type": "string",
-                    "description": "Take the user's question and write a one or two sentence hypothetical answer to the question."
+                    "description": "Take the user's question and write a one or two sentence hypothetical answer to the question in the style of a sentence that might appear in the Louisiana Civil Code. Use complete sentences. Always use Louisiana terminology, i.e, 'parish' instead of 'county', 'immovable property' instead of 'real estate', etc."
                 },
                 "top_n_number": {
                     "type": "integer",
@@ -97,8 +96,28 @@ FUNCTIONS=[
             },
             "required": ["query", "top_n_number"]
         }
+    },
+    {
+        "name": "classify_question",
+        "description": "Classify whether you need more information to answer the user's question or not. Useful if you want to know whether to follow up with a search query or not.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "bool": {
+                    "type": "boolean",
+                    "description": "True for yes you need more information, False for no you have everything you need."
+                }
+            },
+            "required": ["bool"]
+        }
     }
 ]
+
+def classify_question(bool: bool):
+    if bool:
+        return "Yes"
+    else:
+        return "No"
 
 def search(query: str):
     params = {

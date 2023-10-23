@@ -1,21 +1,23 @@
 async function submitQuery() {
     const question = document.getElementById('question').value;
+    const socket = new WebSocket('ws://localhost:8000/ws');
     
-    // Making an API call to the chat endpoint
-    const response = await fetch('http://localhost:8000/chat', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ text: question })
-    });
+    socket.onopen = async function(e) {
+        socket.send(JSON.stringify({ text: question }));
+    };
     
-    if (response.ok) {
-        const data = await response.json();
-        document.getElementById('output').innerText = data.response;
-        document.getElementById('documents').innerText = data.documents.join('\n');  // Display the top 10 results
-    } else {
+    socket.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        if (data.response === "NEED_MORE_INFO") {
+            // Handle the case where the bot needs more information
+        } else {
+            document.getElementById('output').innerText = data.response;
+            document.getElementById('documents').innerText = data.documents.join('\n');  // Display the top 10 results
+        }
+    };
+    
+    socket.onerror = function(error) {
         document.getElementById('output').innerText = 'An error occurred while processing your request.';
         document.getElementById('documents').innerText = '';
-    }
+    };
 }
