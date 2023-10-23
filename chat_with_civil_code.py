@@ -17,8 +17,6 @@ class PersonalityBot:
     def __init__(self, config_file="config.yaml"):
         self.config_file = config_file
 
-        self.needs_more_info = False
-
         # Load the configuration from the YAML file
         with open(config_file, 'r') as file:
             config = yaml.safe_load(file)
@@ -60,10 +58,13 @@ class PersonalityBot:
         return message
 
         
-    def chat_completion(self, prompt: str):
+    def chat_completion(self, prompt: str, extra_context_from_user: str = ""):
+      
         self.conversation_history.append({"role": "user", "content": prompt})
         messages = [{"role": "system", "content": self.system_message}]
         messages += self.conversation_history
+
+        print(f"User's prompt: \n '{prompt}'")
         
         functions_used = []
 
@@ -74,8 +75,8 @@ class PersonalityBot:
 
         classifier_completion = openai.ChatCompletion.create(
             model=self.model,
-            messages=[{"role": "system", "content": "The user is going to ask you a question about Louisiana law. Decide whether you need more information to answer the question first. Always assume the question is about Louisiana law unless the user mentions otherwise."},
-                        {"role": "user", "content": f"{prompt}"}],
+            messages=[{"role": "system", "content": "The user is going to ask you a question about Louisiana law. Decide whether you need more information to answer the question first. If the user just sends a greeting, you need more info. Always assume the question is about Louisiana law unless the user mentions otherwise."},
+                        {"role": "user", "content": f"{prompt} | Extra context from user: {extra_context_from_user}"}],
             functions=FUNCTIONS,
             function_call={"name": "classify_question"}
         )
@@ -95,10 +96,10 @@ class PersonalityBot:
                     
             functions_used.append({"name": function_name, "arguments": function_args})
 
+            print("Do we need more information from user?")
+
             print(classifier_function_response)
-
-            extra_context_from_user = ""
-
+            
             if classifier_function_response == "No":
                 print("We have all the information we need to answer the question.")
 
@@ -109,14 +110,14 @@ class PersonalityBot:
                                 {"role": "user", "content": f"{prompt}"}],
                 )
 
+                # ...
                 follow_up_classifier_response = follow_up_classifier_completion.choices[0].message
 
-                print(follow_up_classifier_response)
+                print(follow_up_classifier_response)                
 
-                # TO DO - Figure out how to get this input from the webpage
+                follow_up_classifier_message = "NEED_MORE_INFO"
 
-                extra_context_from_user = input("\033[94mYou: \033[0m")
-
+                return follow_up_classifier_response.content,  follow_up_classifier_message
 
         raw_completion = openai.ChatCompletion.create(
             model=self.model,

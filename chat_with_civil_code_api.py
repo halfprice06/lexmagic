@@ -20,14 +20,14 @@ class Prompt(BaseModel):
 async def chat(websocket: WebSocket):
     bot = PersonalityBot()
     await websocket.accept()
-    while True:
-        data = await websocket.receive_json()
-        try:
-            final_reply, top_10_results = bot.chat_completion(data['text'])
-            if bot.needs_more_info == True:  # If the bot needs more information
-                await websocket.send_json({"response": "NEED_MORE_INFO"})
-            else:
-                await websocket.send_json({"response": final_reply, "documents": top_10_results})
-        except Exception as e:
-            print(f"Error: {e}")  # Log the original error message
-            await websocket.send_json({"error": str(e)})
+    data = await websocket.receive_json()
+    try:
+        followup_question, need_more_info = bot.chat_completion(data['text'])
+        if need_more_info == "NEED_MORE_INFO":
+            await websocket.send_json({"response": followup_question, "documents": need_more_info})
+            data = await websocket.receive_json()
+            followup_question, need_more_info = bot.chat_completion(data['text'])
+        await websocket.send_json({"response": followup_question, "documents": need_more_info})
+    except Exception as e:
+        print(f"Error: {e}")  # Log the original error message
+        await websocket.send_json({"error": str(e)})

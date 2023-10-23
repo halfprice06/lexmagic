@@ -19,37 +19,6 @@ with open(config_file, 'r') as file:
 
 api_key_serpapi = config['api_keys']['serpapi']
 
-INTERNET_FUNCTIONS=[
-    {
-        "name": "search",
-        "description": "When the user is asking for information you need to google, search for a query and return results",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "query": {
-                    "type": "string",
-                    "description": "The search query"
-                }
-            },
-            "required": ["query"],
-        },
-    },
-    {
-        "name": "web_scrape",
-        "description": "Scrape the content from a given URL using BeautifulSoup. Useful if you want to follow up on a search query with more information from a specific website.",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "url": {
-                    "type": "string",
-                    "description": "The URL to scrape"
-                }
-            },
-            "required": ["url"],
-        }
-    }
-]
-
 FUNCTIONS=[
     {
         "name": "search",
@@ -88,10 +57,6 @@ FUNCTIONS=[
                 "query": {
                     "type": "string",
                     "description": "Take the user's question and write a one or two sentence hypothetical answer to the question in the style of a sentence that might appear in the Louisiana Civil Code. Use complete sentences. Always use Louisiana terminology, i.e, 'parish' instead of 'county', 'immovable property' instead of 'real estate', etc."
-                },
-                "top_n_number": {
-                    "type": "integer",
-                    "description": "The number of top results to return. Default is 10."
                 }
             },
             "required": ["query", "top_n_number"]
