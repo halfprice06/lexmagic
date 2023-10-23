@@ -1,5 +1,5 @@
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Helvetica', sans-serif; /* Cool non-serif font */
     background-color: #f7f7f7;
     margin: 0;
     padding: 0;
@@ -31,17 +31,13 @@ body {
 }
 
 .container {
-    max-width: 600px;
+    max-width: 550px;
     margin: 30px auto;
     padding: 20px;
     background-color: #fff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     transition: margin 0.3s ease-out;
-}
-
-.container.with-directory {
-    margin: 50px 0px 50px 20px;
 }
 
 h1 {
@@ -101,6 +97,57 @@ button:hover {
     transform: translateX(0);
 }
 
+.directory-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-container, .signup-container {
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    transition: margin 0.3s ease-out;
+}
+
+.jurisdiction-section {
+    top: 0;
+    position: fixed;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    overflow-y: auto;
+    background-color: #fff;
+    border-right: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.1);
+    font-size: 0.8em;
+}
+
+#loginForm, #signupForm {
+    margin: 50px auto;
+    flex-direction: column;    
+}
+
+#loginForm input, #signupForm input {
+    width: 100px; /* or any specific width you want */
+}
+
+#closeArticles {
+    position: absolute;
+    left: 20px;
+}
+
+#loginUsername, #loginPassword, #signupUsername, #signupPassword {
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
 #directory {
     margin-top: 20px;
 }
@@ -111,4 +158,20 @@ button:hover {
     height: 5px;
     width: 0%;
     transition: width 0.1s ease-out;
+}
+
+#output, #documents, #directory {
+    text-align: justify;
+}
+.thumbs {
+    text-align: center;
+}
+.directory_toggle {
+    text-align: center;
+}
+.query-section {
+    text-align: center;
+}
+.directory-header {
+    text-align: center;
 }

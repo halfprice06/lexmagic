@@ -69,11 +69,16 @@ document.getElementById('question').addEventListener('input', function(e) {
     extraContext = e.target.value;
 });
 
-document.getElementById('toggleButton').addEventListener('click', function() {
+document.getElementById('openArticles').addEventListener('click', function() {
     var directory = document.querySelector('.directory-section');
     var container = document.querySelector('.container');
     directory.classList.toggle('open');
     container.classList.toggle('with-directory');
 });
 
-    
+document.getElementById('closeArticles').addEventListener('click', function() {
+    var directory = document.querySelector('.directory-section');
+    var container = document.querySelector('.container');
+    directory.classList.toggle('open');
+    container.classList.toggle('with-directory');
+});

@@ -5,23 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat with the Civil Code</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        #output, #documents, #directory {
-            text-align: justify;
-        }
-        .thumbs {
-            text-align: center;
-        }
-        .directory_toggle {
-            text-align: center;
-        }
-        .query-section {
-            text-align: center;
-        }
-        .directory-header {
-            text-align: center;
-        }
-    </style>
+
 </head>
 <body>
     <div class="container">
@@ -44,15 +28,30 @@
         <div class="documents-section">
             <h2></h2>
             <div class="directory_toggle">
-                <button id="toggleButton">Show Relevant Articles</button>
+                <button id="openArticles">Show Relevant Articles</button>
             </div>
         </div>
     </div>
     <div class="directory-section">
-        <div class ="directory-header">
+        <div class="directory-header">
+            <button id="closeArticles"> &#9776; </button>
             <h2>Relevant Civil Code Articles</h2>
         </div>
         <p id="directory">Relevant articles will be displayed here.<p>
+    </div>
+    <div class="jurisdiction-section">
+        <h2>What to Include in Search</h2>
+        <p id="jurisdiction-options">Jurisdiction options:</p>
+        <input type="checkbox" id="option1" name="option1" value="Louisiana Civil Code">
+        <label for="option1">Louisiana Civil Code</label><br>
+        <input type="checkbox" id="option2" name="option2" value="Louisiana Code of Civil Procedure">
+        <label for="option2">Louisiana Code of Civil Procedure</label><br>
+        <input type="checkbox" id="option3" name="option3" value="Uniform District Court Rules">
+        <label for="option3">Uniform District Court Rules</label><br>
+        <input type="checkbox" id="option4" name="option4" value="Louisiana Revised Statutes">
+        <label for="option4">Louisiana Revised Statutes</label><br>
+        <input type="checkbox" id="option5" name="option5" value="Louisiana Code of Criminal Procedure">
+        <label for="option5">Louisiana Code of Criminal Procedure</label><br>
     </div>
     <script src="scripts.js"></script>
 </body>
