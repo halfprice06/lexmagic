@@ -2,7 +2,7 @@ async function submitQuery() {
     const question = document.getElementById('question').value;
     const askButton = document.getElementById('askButton');
     const progressBar = document.getElementById('progress-bar');
-    const socket = new WebSocket('ws://192.168.1.8:8000/ws');
+    const socket = new WebSocket('ws://localhost:8000/ws');
     
     askButton.classList.add('button-loading');  // Add loading animation
     progressBar.style.display = 'block';  // Show progress bar
