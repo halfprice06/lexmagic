@@ -1,6 +1,6 @@
 # Legal Beagle
 
-![alt text]([http://url/to/img.png](https://github.com/halfprice06/legal_beagle/blob/main/legalbeagle.jpeg)
+![alt text]([http://url/to/img.png](https://github.com/halfprice06/legal_beagle/blob/main/legalbeagle.jpeg))
 
 Legal Beagle is a chatbot that can search a vector embeddings database with embeddings of the Louisiana Civil Code (and other sources of law) to answer legal questions for the user.
 
