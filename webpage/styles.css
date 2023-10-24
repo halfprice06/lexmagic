@@ -3,7 +3,7 @@ nav ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #e74c3c;
+    background-color: #801b1b;
 }
 
 nav li {
@@ -12,31 +12,33 @@ nav li {
 
 nav li a {
     display: block;
-    color: white;
+    color: #f2f2f2;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
 }
 
 nav li a:hover {
-    background-color: #111;
+    background-color: #801b1b;
 }
 
 body {
     font-family: 'Artial', sans-serif; /* Cool non-serif font */
-    background-color: #f7f7f7;
+    color: #f2f2f2;
+    background-color: #262626;
     margin: 0;
     padding: 0;
 }
 
 h1 {
-    color: #2c3e50;
+    color: #f2f2f2;
     text-align: center;
     margin-bottom: 20px;
 }
 
 h2 {
-    border-bottom: 2px solid #e74c3c;
+    color: #f2f2f2;
+    border-bottom: 2px solid #1a1a1a;
     padding-bottom: 10px;
     margin-top: 40px;
 }
@@ -54,8 +56,8 @@ input[type="text"] {
 }
 
 button {
-    background-color: #e74c3c;
-    color: #fff;
+    background-color: #801b1b;
+    color: #f2f2f2;
     padding: 10px 15px;
     border: none;
     border-radius: 4px;
@@ -64,7 +66,7 @@ button {
 }
 
 button:hover {
-    background-color: #c0392b;
+    background-color: #801b1b;
 }
 
 .button-loading {
@@ -81,7 +83,7 @@ button:hover {
     margin: -8px 0 0 -8px;
     width: 16px;
     height: 16px;
-    border: 2px solid #fff;
+    border: 2px solid #f2f2f2;
     border-top-color: transparent;
     border-radius: 50%;
     animation: spin 1s linear infinite;
@@ -91,7 +93,7 @@ button:hover {
     max-width: 800px;
     margin: 50px auto 30px auto; /* Adjust the top margin */
     padding: 20px;
-    background-color: #fff;
+    background-color: #1a1a1a;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     transition: margin 0.3s ease-out;
@@ -109,7 +111,7 @@ button:hover {
     width: 350px;
     height: 100%;
     overflow-y: auto;
-    background-color: #fff;
+    background-color: #1a1a1a;
     border-left: 1px solid #ccc;
     padding: 20px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
@@ -132,7 +134,7 @@ button:hover {
     max-width: 600px;
     margin: 30px auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #1a1a1a;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     transition: margin 0.6s ease-out;
@@ -146,7 +148,7 @@ button:hover {
     width: 350px;
     height: 100%;
     overflow-y: auto;
-    background-color: #fff;
+    background-color: #1a1a1a;
     border-right: 1px solid #ccc;
     padding: 20px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
@@ -196,7 +198,7 @@ button:hover {
 
 #progress-bar {
     margin-top: 50px; /* Adjust this value as needed */
-    background-color: #e74c3c;
+    background-color: #801b1b;
     height: 5px;
     width: 0%;
     transition: width 0.1s ease-out;
@@ -223,7 +225,7 @@ footer {
     left: 0;
     bottom: 0;
     width: 100%;
-    background-color: #f7f7f7;
-    color: black;
+    background-color: #262626;
+    color: #f2f2f2;
     text-align: center;
 }
