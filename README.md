@@ -25,7 +25,7 @@ What things you need to install the software and how to install them:
 2. **Navigate to the project directory**
 
     ```sh
-    cd chat_with_civil_code
+    cd legal_beagle
     ```
 
 3. **Set up a virtual environment** (optional but recommended)
