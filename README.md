@@ -56,7 +56,7 @@ What things you need to install the software and how to install them:
 
 ### Running the Webpage
 
-1. **Navigate to the webpage directory**
+1. **In a new terminal window, navigate to the webpage directory**
 
     ```sh
     cd webpage
