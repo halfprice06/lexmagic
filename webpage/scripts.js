@@ -1,9 +1,8 @@
 async function submitQuery() {
-    let extraContext = '';
     const question = document.getElementById('question').value;
-    const askButton = document.querySelector('.ask_button button');
+    const askButton = document.getElementById('askButton');
     const progressBar = document.getElementById('progress-bar');
-    const socket = new WebSocket('ws://localhost:8000/ws');
+    const socket = new WebSocket('ws://192.168.1.8:8000/ws');
     
     askButton.classList.add('button-loading');  // Add loading animation
     progressBar.style.display = 'block';  // Show progress bar
@@ -15,7 +14,7 @@ async function submitQuery() {
             clearInterval(intervalId);
         }
         progressBar.style.width = `${progress}%`;
-    }, 1500);  // Update progress every 150ms
+    }, 1500);  // Update progress every 1500ms
 
     socket.onopen = async function(e) {
         socket.send(JSON.stringify({ text: question }));
@@ -30,9 +29,6 @@ async function submitQuery() {
             askButton.classList.remove('button-loading');
             // Prompt the user for more information
             document.getElementById('output').innerText = data.response;
-            // Update the question with the additional context
-            extraContext = document.getElementById('question').value;
-            question = question + ' ' + extraContext;
             // Send the updated question to the server
             socket.send(JSON.stringify({ text: question }));
         } else {
@@ -64,21 +60,23 @@ function thumbsDown() {
 
 }
 
-    
-document.getElementById('question').addEventListener('input', function(e) {
-    extraContext = e.target.value;
-});
 
 document.getElementById('openArticles').addEventListener('click', function() {
     var directory = document.querySelector('.directory-section');
-    var container = document.querySelector('.container');
     directory.classList.toggle('open');
-    container.classList.toggle('with-directory');
 });
 
 document.getElementById('closeArticles').addEventListener('click', function() {
     var directory = document.querySelector('.directory-section');
-    var container = document.querySelector('.container');
     directory.classList.toggle('open');
-    container.classList.toggle('with-directory');
+});
+
+document.getElementById('openLawSelector').addEventListener('click', function() {
+    var lawSelector = document.querySelector('.law-section');
+    lawSelector.classList.toggle('open');
+});
+
+document.getElementById('closeLawSelector').addEventListener('click', function() {
+    var lawSelector = document.querySelector('.law-section');
+    lawSelector.classList.toggle('open');
 });

@@ -1,10 +1,3 @@
-body {
-    font-family: 'Artial', sans-serif; /* Cool non-serif font */
-    background-color: #f7f7f7;
-    margin: 0;
-    padding: 0;
-}
-
 nav ul {
     list-style-type: none;
     margin: 0;
@@ -29,9 +22,49 @@ nav li a:hover {
     background-color: #111;
 }
 
+body {
+    font-family: 'Artial', sans-serif; /* Cool non-serif font */
+    background-color: #f7f7f7;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    color: #2c3e50;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h2 {
+    border-bottom: 2px solid #e74c3c;
+    padding-bottom: 10px;
+    margin-top: 40px;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+button {
+    background-color: #e74c3c;
+    color: #fff;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #c0392b;
 }
 
 .button-loading {
@@ -56,7 +89,7 @@ nav li a:hover {
 
 .container {
     max-width: 800px;
-    margin: 70px auto 30px auto; /* Adjust the top margin */
+    margin: 50px auto 30px auto; /* Adjust the top margin */
     padding: 20px;
     background-color: #fff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -64,58 +97,24 @@ nav li a:hover {
     transition: margin 0.3s ease-out;
 }
 
-h1 {
-    color: #2c3e50;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-h2 {
-    border-bottom: 2px solid #e74c3c;
-    padding-bottom: 10px;
-    margin-top: 40px;
-}
-
 .query-section, .response-section, .documents-section {
     margin: 20px;
 }
 
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin-bottom: 10px;
-}
-
-button {
-    background-color: #e74c3c;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-button:hover {
-    background-color: #c0392b;
-}
-
 .directory-section {
-    top: 70px; /* Adjust the top property */
+    top: 50px; /* Adjust the top property */
     bottom: 70px;
     position: fixed;
     right: 0;
-    width: 600px;
+    width: 350px;
     height: 100%;
     overflow-y: auto;
     background-color: #fff;
     border-left: 1px solid #ccc;
     padding: 20px;
-    box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
     transform: translateX(100%);
-    transition: transform 0.3s ease-out;
+    transition: transform .6s ease-out;
 }
 
 .directory-section.open {
@@ -126,6 +125,7 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 40px; /* Add this line */
 }
 
 .login-container, .signup-container {
@@ -135,10 +135,10 @@ button:hover {
     background-color: #fff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    transition: margin 0.3s ease-out;
+    transition: margin 0.6s ease-out;
 }
 
-.jurisdiction-section {
+.law-section {
     top: 50px; /* Adjust the top property */
     bottom: 70px;
     position: fixed;
@@ -149,7 +149,19 @@ button:hover {
     background-color: #fff;
     border-right: 1px solid #ccc;
     padding: 20px;
-    box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.6s ease-out;
+}
+
+.law-section.open {
+    transform: translateX(0);
+}
+
+.law-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 #loginForm, #signupForm {
@@ -164,6 +176,11 @@ button:hover {
 #closeArticles {
     position: absolute;
     left: 20px;
+}
+
+#closelawSelector {
+    position: absolute;
+    right: 20px;
 }
 
 #loginUsername, #loginPassword, #signupUsername, #signupPassword {
