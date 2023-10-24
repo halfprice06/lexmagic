@@ -35,8 +35,6 @@ def read_csv_data(filepath):
 
     return documents, metadatas, ids
 
-    return documents, metadatas, ids
-
 # Initialize Chroma Client and load existing database
 chroma_client = chromadb.PersistentClient("vdb")
 

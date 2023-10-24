@@ -5,7 +5,6 @@ import requests
 import html2text
 from openpyxl import Workbook
 from openpyxl.utils import get_column_letter
-import os
 import json
 from datetime import datetime
 from serpapi import GoogleSearch
