@@ -58,10 +58,10 @@ What things you need to install the software and how to install them:
 
 ### Running the Webpage
 
-1. **Navigate to the webpage directory**
+1. **In a new terminal window, navigate to the webpage directory**
 
     ```sh
-    cd webpage
+    cd legal_beagle/webpage
     ```
 
 2. **Run a local HTTP server**
@@ -70,6 +70,11 @@ What things you need to install the software and how to install them:
 
     ```sh
     python -m http.server 8080
+    ```
+    if issues on macOS, try:
+
+    ```sh
+    /opt/homebrew/opt/python@3.11/bin/python3.11 -m http.server 8080
     ```
 
 3. **Access the webpage**
