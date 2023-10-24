@@ -1,12 +1,6 @@
 # Legal Beagle
 
-Legal Beagle is a chatbot that can search a vector embeddings database with embeddings of the Louisiana Civil Code (and other sources of law) to answer legal questions for the user. When the user asks a question about Louisiana law, the bot uses the vector search function to search the Civil Code. The search returns the top 10 most similar articles, which are used to generate a response to the user. If the vector search results do not directly answer the question, the bot asks the user to rephrase their question. The bot always cites the article number in its response. If the user asks a question that is not about Louisiana law, the bot uses the default chatbot function.
-
-The bot is implemented in the `chat_with_civil_code.py` file. This file contains the `PersonalityBot` class, which handles the conversation with the user, and the `chat_completion` method, which handles the generation of responses. The bot uses the OpenAI to generate responses and search the Civil Code.
-
-To run the bot, you need to install the required dependencies, clone the repository, navigate to the project directory, set up a virtual environment (optional but recommended), and install the dependencies. You also need to set up necessary environment variables or place API keys in the respective configuration files. If you want to test the webpage, you need to navigate to the webpage directory and run a local HTTP server. You can then access the webpage at `http://localhost:8000` or whichever port your HTTP server is using. You can interact with the chatbot via the WebSocket connection established in the earlier steps. Send messages using JSON with the appropriate structure for your chatbot's requirements.
-
-Once the http server is running, you can start the FastAPI server. This will start the server on a default port (often 8000) or on a port you specify.
+Legal Beagle is a chatbot that can search a vector embeddings database with embeddings of the Louisiana Civil Code (and other sources of law) to answer legal questions for the user.
 
 ## Getting Started
 
