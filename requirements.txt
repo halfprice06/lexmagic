@@ -1,0 +1,14 @@
+beautifulsoup4==4.12.2
+chromadb==0.4.13
+elevenlabs==0.2.24
+fastapi==0.104.0
+google_search_results==2.4.2
+html2text==2020.1.16
+nicegui==1.4.0
+numpy==1.25.2
+openai==0.27.10
+openpyxl==3.1.2
+pydantic==1.10.12
+PyYAML==6.0.1
+PyYAML==6.0.1
+Requests==2.31.0
