@@ -1,6 +1,8 @@
-# Legal Beagle
+# Atticus
 
-Legal Beagle is a chatbot that can search a vector embeddings database with embeddings of the Louisiana Civil Code (and other sources of law) to answer legal questions for the user.
+Atticus is a legal answering service that grounds its answers in legal statutes and case law using vector embeddings such that its responses are more reliable than a typical AI chatbot.
+
+Atticus is a work in progress and likely has many bugs. Its answers are not to be trusted nor do they qualify as legal advice. Always consult a licensed attorney for professinoal legal advice.
 
 ## Getting Started
 
@@ -19,13 +21,13 @@ What things you need to install the software and how to install them:
 1. **Clone the repository**
 
     ```sh
-    git clone https://github.com/halfprice06/legal_beagle
+    git clone https://github.com/halfprice06/atticus
     ```
 
 2. **Navigate to the project directory**
 
     ```sh
-    cd chat_with_civil_code
+    cd atticus
     ```
 
 3. **Set up a virtual environment** (optional but recommended)
@@ -51,7 +53,7 @@ What things you need to install the software and how to install them:
 1. **Start the FastAPI server**
 
     ```sh
-    uvicorn chat_with_civil_code_api:app --reload
+    uvicorn fastapi_server:app --reload
     ```
 
 ### Running the Webpage
@@ -76,6 +78,4 @@ What things you need to install the software and how to install them:
 
 ## Using the Chatbot
 
-- You can interact with the chatbot via the WebSocket connection established in the earlier steps.
-
-## Troubleshooting
+- You can interact with Atticus via the web interface to the api.
