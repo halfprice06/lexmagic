@@ -19,7 +19,7 @@ What things you need to install the software and how to install them:
 1. **Clone the repository**
 
     ```sh
-    git clone https://github.com/halfprice06/chat_with_civil_code
+    git clone https://github.com/halfprice06/legal_beagle
     ```
 
 2. **Navigate to the project directory**
