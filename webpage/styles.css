@@ -5,6 +5,30 @@ body {
     padding: 0;
 }
 
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #e74c3c;
+}
+
+nav li {
+    float: left;
+}
+
+nav li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+nav li a:hover {
+    background-color: #111;
+}
+
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
@@ -31,8 +55,8 @@ body {
 }
 
 .container {
-    max-width: 550px;
-    margin: 30px auto;
+    max-width: 800px;
+    margin: 70px auto 30px auto; /* Adjust the top margin */
     padding: 20px;
     background-color: #fff;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -79,7 +103,8 @@ button:hover {
 }
 
 .directory-section {
-    top: 0;
+    top: 70px; /* Adjust the top property */
+    bottom: 70px;
     position: fixed;
     right: 0;
     width: 600px;
@@ -114,17 +139,17 @@ button:hover {
 }
 
 .jurisdiction-section {
-    top: 0;
+    top: 50px; /* Adjust the top property */
+    bottom: 70px;
     position: fixed;
     left: 0;
-    width: 250px;
+    width: 350px;
     height: 100%;
     overflow-y: auto;
     background-color: #fff;
     border-right: 1px solid #ccc;
     padding: 20px;
     box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.1);
-    font-size: 0.8em;
 }
 
 #loginForm, #signupForm {
@@ -173,5 +198,15 @@ button:hover {
     text-align: center;
 }
 .directory-header {
+    text-align: center;
+}
+
+footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: #f7f7f7;
+    color: black;
     text-align: center;
 }
