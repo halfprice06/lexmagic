@@ -59,7 +59,7 @@ What things you need to install the software and how to install them:
 1. **In a new terminal window, navigate to the webpage directory**
 
     ```sh
-    cd webpage
+    cd legal_beagle/webpage
     ```
 
 2. **Run a local HTTP server**
