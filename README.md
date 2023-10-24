@@ -1,6 +1,6 @@
 # Atticus
 
-Atticus is a legal answering service that grounds its answers in legal statutes and case law using vector embeddings such that its responses are more reliable than a typical AI chatbot.
+Atticus is a legal answering service that grounds its answers in web searches, legal statutes and case law using vector embeddings such that its responses are more reliable than a typical AI chatbot.
 
 Atticus is a work in progress and likely has many bugs. Its answers are not to be trusted nor do they qualify as legal advice. Always consult a licensed attorney for professinoal legal advice.
 
@@ -44,9 +44,9 @@ What things you need to install the software and how to install them:
     pip install -r requirements.txt
     ```
 
-5. **Environment Variables and API Keys**
+5. **API Keys**
 
-    - Make sure to set up necessary environment variables in the config.yaml.
+    - Make sure to set up necessary settings and api keys in the config.yaml.
 
 ### Running the Server
 
@@ -61,7 +61,7 @@ What things you need to install the software and how to install them:
 1. **In a new terminal window, navigate to the webpage directory**
 
     ```sh
-    cd legal_beagle/webpage
+    cd atticus/webpage
     ```
 
 2. **Run a local HTTP server**
@@ -71,7 +71,8 @@ What things you need to install the software and how to install them:
     ```sh
     python -m http.server 8080
     ```
-    if issues on macOS, try:
+    
+    - If issues on macOS, try:
 
     ```sh
     /opt/homebrew/opt/python@3.11/bin/python3.11 -m http.server 8080

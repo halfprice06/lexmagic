@@ -1,5 +1,4 @@
 import openai
-import elevenlabs
 import yaml
 import os
 import json
@@ -32,7 +31,6 @@ class PersonalityBot:
 
         self.conversation_history = []
 
-        elevenlabs.set_api_key(self.api_key_elevenlabs)
         openai.api_key = self.api_key_openai
 
         self.system_message = self.get_system_message()
