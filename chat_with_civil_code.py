@@ -12,7 +12,6 @@ from llm_functions import *
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
-
 class PersonalityBot:
     def __init__(self, config_file="config.yaml"):
         self.config_file = config_file
@@ -220,38 +219,6 @@ class PersonalityBot:
         self.conversation_history.append({"role": "assistant", "content": reply})
         self.system_message = self.get_system_message()
         return final_reply, top_10_results
-
-    def generate_audio(self, text_stream):
-        audio_stream = elevenlabs.generate(
-            text=text_stream,
-            voice=self.voice,
-            model="eleven_monolingual_v1",
-            stream=True,
-        )
-        elevenlabs.stream(audio_stream)
-    
-    def run(self):      
-        while True:
-            prompt = input("\033[94mYou: \033[0m")
-            if prompt.lower() == 'exit' or prompt.lower() == 'quit':
-                break
-            elif prompt.lower() == 'clear':
-                self.conversation_history = []
-                self.prompt_tokens = 0
-                self.completion_tokens = 0
-                os.system('cls' if os.name == 'nt' else 'clear')
-                print(f"\n\033[92m{self.persona}: \033[0mHistory cleared.\n")
-            elif prompt.lower() == 'voice on':
-                self.text_to_speech = True
-                print(f"\n\033[92m{self.persona}: \033[0mText to speech is now on.\n")
-            elif prompt.lower() == 'voice off':
-                self.text_to_speech = False
-                print(f"\n\033[92m{self.persona}: \033[0mText to speech is now off.\n")
-            else:
-                text_stream = self.chat_completion(prompt)
-                
-                if self.text_to_speech:
-                    self.generate_audio(text_stream)
 
 
 if __name__ == "__main__":

@@ -1,9 +1,8 @@
 from fastapi import FastAPI, WebSocket, HTTPException, status, Depends
 from pydantic import BaseModel
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from pydantic import BaseModel
-from chat_with_civil_code import PersonalityBot
 from fastapi.middleware.cors import CORSMiddleware
+from chat_with_civil_code import PersonalityBot
 
 
 app = FastAPI()
