@@ -57,7 +57,7 @@ What things you need to install the software and how to install them:
 1. **Start the FastAPI server**
 
     ```sh
-    uvicorn chat_with_the_civil_code_api:app --reload
+    uvicorn chat_with_civil_code_api:app --reload
     ```
 
 ### Running the Webpage
