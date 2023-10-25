@@ -14,7 +14,7 @@ async function submitQuery() {
             clearInterval(intervalId);
         }
         progressBar.style.width = `${progress}%`;
-    }, 1500);  // Update progress every 1500ms
+    }, 1850);  // Update progress every 1500ms
 
     socket.onopen = async function(e) {
         socket.send(JSON.stringify({ text: question }));
@@ -33,7 +33,7 @@ async function submitQuery() {
             socket.send(JSON.stringify({ text: question }));
         } else {
             document.getElementById('output').innerText = data.response;
-            document.getElementById('directory').innerText = data.documents.join('\n');  // Display the top 10 results
+            document.getElementById('directory').innerText = data.documents.join('\n\n\n');  // Display the top 10 results
         }
         askButton.classList.remove('button-loading');  // Remove loading animation
         progressBar.style.display = 'none';  // Hide progress bar

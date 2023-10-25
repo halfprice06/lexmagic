@@ -1,4 +1,4 @@
-def vector_search_civil_code(query, top_n_number=10):
+def vector_search_civil_code(query, collections=['cc_articles', 'ccp_articles', 'ccrp_articles'], top_n_number=10):
     import chromadb
     import sqlite3
     import logging
@@ -20,51 +20,45 @@ def vector_search_civil_code(query, top_n_number=10):
     conn.commit()
 
     # Initialize Chroma Client and load existing database
-    chroma_client = chromadb.PersistentClient("vdb")
-
-    # Get the existing collection
-    collection = chroma_client.get_collection(name="civil_code_articles")
-
-    # Query Chroma DB
-    results = collection.query(query_texts=[query], n_results=top_n_number)
-
-    # Extract individual lists
-    ids_list = results.get('ids', [])[0]  # Extracting the first list from the 'ids'
-    documents_list = results.get('documents', [])[0]  # Extracting the first list from the 'documents'
-    metadatas_list = results.get('metadatas', [])[0]  # Extracting the first list from the 'metadatas'
-    distances_list = results.get('distances', [])[0]  # Extracting the first list from the 'distances'
+    chroma_client = chromadb.PersistentClient("la_laws_db")
 
     # Prepare the output string
     output = ""
-    top_articles = []
+    all_articles = []
 
-    # Loop through the extracted lists
-    for idx, doc, meta, dist in zip(ids_list, documents_list, metadatas_list, distances_list):
+    # Loop through the collections
+    for collection_name in collections:
+        # Get the existing collection
+        collection = chroma_client.get_collection(name=collection_name)
 
-        # Add the current article to the output
-        output += f"La. Civil Code Article {idx} - {meta.get('article_title')}\n"
-        output += f"Content: {doc}\n"
-        output +=  "\n\n"
-        top_articles.append(f"La. Civil Code Article {idx} - {meta.get('article_title')}\n{doc}")
+        # Query Chroma DB
+        results = collection.query(query_texts=[query], n_results=top_n_number)
 
-        # Insert the result into the SQLite database
-        c.execute('''
-            INSERT INTO results (id, content, source, distance, query)
-            VALUES (?, ?, ?, ?, ?)
-        ''', (idx, doc, meta.get('article_title'), dist, query))
-    conn.commit()
+        # Extract individual lists
+        ids_list = results.get('ids', [])[0]  # Extracting the first list from the 'ids'
+        documents_list = results.get('documents', [])[0]  # Extracting the first list from the 'documents'
+        metadatas_list = results.get('metadatas', [])[0]  # Extracting the first list from the 'metadatas'
+        distances_list = results.get('distances', [])[0]  # Extracting the first list from the 'distances'
 
-    return output, top_articles
+        # Loop through the extracted lists
+        for idx, doc, meta, dist in zip(ids_list, documents_list, metadatas_list, distances_list):
+            # Add the current article to the all_articles list
+            all_articles.append((dist, doc))
 
+            # Insert the result into the SQLite database
+            c.execute('''
+                INSERT INTO results (id, content, source, distance, query)
+                VALUES (?, ?, ?, ?, ?)
+            ''', (idx, doc, meta.get('title'), dist, query))
+        conn.commit()
 
-def repl():
-    while True:
-        query = input("Enter your query (or 'quit' to exit): ")
-        if query.lower() == 'quit':
-            break
-        top_n_number = int(input("Enter the number of top results you want: "))
-        result = vector_search_civil_code(query, top_n_number)
-        print(result)
+    # Sort all_articles by distance and take the top_n_number of articles
+    all_articles.sort()
+    top_articles = all_articles[:top_n_number]
 
-if __name__ == "__main__":
-    repl()
+    # Prepare the output string with top_articles
+    for dist, article in top_articles:
+        output += f"{article}\n\n"
+
+    return output, [article for _, article in top_articles]
+

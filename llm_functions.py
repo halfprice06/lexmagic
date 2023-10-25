@@ -49,13 +49,13 @@ FUNCTIONS=[
     },
     {
         "name": "vector_search_civil_code",
-        "description": "Search for articles based on a query and return top N results. To aid vector search, take the user's question and rewrite it as a hypothetical answer to increase likelihood of vector search match. Write the answer in the style of a sentence that might appear in the Louisiana Civil Code.",
+        "description": "Search for laws based on a query and return top N results. To aid vector search, take the user's question and rewrite it as a hypothetical answer to increase likelihood of vector search match. Write the answer in the style of a sentence that might appear in a Louisiana statute or code article.",
         "parameters": {
             "type": "object",
             "properties": {
                 "query": {
                     "type": "string",
-                    "description": "Take the user's question and write a one or two sentence hypothetical answer to the question in the style of a sentence that might appear in the Louisiana Civil Code. Use complete sentences. Always use Louisiana terminology, i.e, 'parish' instead of 'county', 'immovable property' instead of 'real estate', etc."
+                    "description": "Take the user's question and write a one or two sentence hypothetical answer to the question in the style of a sentence that might appear in a Louisiana statute or Civil Code Article. Use complete sentences. Always use Louisiana terminology, i.e, 'parish' instead of 'county', 'immovable property' instead of 'real estate', etc."
                 }
             },
             "required": ["query", "top_n_number"]

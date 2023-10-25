@@ -5,7 +5,7 @@ nav ul {
     overflow: hidden;
     border: 5px solid #1a1a1a; /* Add thick red border */
     border-radius: 0; /* Make the border rounded to form a square with rounded corners */
-    background-color: #801b1b;
+    background-color: #268da6;
 }
 
 nav li {
@@ -21,7 +21,7 @@ nav li a {
 }
 
 nav li a:hover {
-    background-color: #801b1b;
+    background-color: #268da6;
 }
 
 body {
@@ -58,7 +58,7 @@ input[type="text"] {
 }
 
 button {
-    background-color: #801b1b;
+    background-color: #268da6;
     color: #f2f2f2;
     padding: 10px 15px;
     border: none;
@@ -68,7 +68,7 @@ button {
 }
 
 button:hover {
-    background-color: #801b1b;
+    background-color: #268da6;
 }
 
 .button-loading {
@@ -98,7 +98,7 @@ button:hover {
     padding: 20px;
     background-color: #1a1a1a;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border: 5px solid #801b1b; /* Add thick red border */
+    border: 5px solid #268da6; /* Add thick red border */
     border-radius: 25px; /* Make the border rounded to form a square with rounded corners */
     z-index: 1;
     transition: margin 0.3s ease-out;
@@ -113,13 +113,13 @@ button:hover {
     bottom: 70px;
     position: fixed;
     right: 0;
-    width: 320px;
+    width: 800px;
     height: calc(100% - 140px); /* Subtract the total of top and bottom from 100% */
     overflow-y: auto;
     background-color: #1a1a1a;
     border-left: 1px solid #ccc;
     padding: 20px;
-    border: 5px solid #801b1b;
+    border: 5px solid #268da6;
     border-radius: 25px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
     z-index: 1;
@@ -160,7 +160,7 @@ button:hover {
     border-right: 1px solid #ccc;
     padding: 20px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
-    border: 5px solid #801b1b; /* Add thick red border */
+    border: 5px solid #268da6; /* Add thick red border */
     border-radius: 25px; /* Make the border rounded to form a square with rounded corners */
     z-index: 1;
     transform: translateX(-100%);
@@ -209,7 +209,7 @@ button:hover {
 
 #progress-bar {
     margin-top: 50px; /* Adjust this value as needed */
-    background-color: #801b1b;
+    background-color: #268da6;
     height: 5px;
     width: 0%;
     transition: width 0.1s ease-out;
@@ -236,7 +236,7 @@ button:hover {
     height: 200px; /* Increased the size of the square */
     margin: 0 auto;
     display: block;
-    border: 5px solid #801b1b; /* Add thick red border */
+    border: 5px solid #268da6; /* Add thick red border */
     border-radius: 25px; /* Make the border rounded to form a square with rounded corners */
 }
 

@@ -1,50 +1,44 @@
 # Import required libraries
-import csv
-import chromadb
 import sqlite3
+import chromadb
 
-# Create a new SQLite database and table if they don't exist
-conn = sqlite3.connect('results.db')
-c = conn.cursor()
-c.execute('''
-    CREATE TABLE IF NOT EXISTS results (
-        id INTEGER,
-        content TEXT,
-        source TEXT,
-        distance REAL,
-        query TEXT
-    )
-''')
-conn.commit()
-
-
-# Function to read the CSV and prepare documents, metadatas, and ids
-def read_csv_data(filepath):
+# Function to read the SQLite DB and prepare documents, metadatas, and ids
+def read_db_data(db_name, table_name):
     documents = []
     metadatas = []
     ids = []
 
-    with open(filepath, 'r') as file:
-        reader = csv.DictReader(file)
-        for row in reader:
-            # Concatenate article number, title and content
-            document = f"{row['article_number']} {row['article_title']} {row['article_content']}"
-            documents.append(document)
-            metadatas.append({"article_title": row['article_title']})
-            ids.append(row['article_number'])
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute(f"SELECT * FROM {table_name}")
+
+    for row in cursor.fetchall():
+        # Concatenate article number, title and content
+        document = f"{row[0]} {row[2]} {row[3]}"
+        documents.append(document)
+        title = row[2] if row[2] is not None else "No title"
+        metadatas.append({"article_title": title, "url": row[1]})
+        ids.append(row[0])
 
     return documents, metadatas, ids
 
 # Initialize Chroma Client and load existing database
-chroma_client = chromadb.PersistentClient("vdb")
+chroma_client = chromadb.PersistentClient("la_laws_db")
 
-# Get the existing collection
-collection = chroma_client.create_collection(name="civil_code_articles")
+# Create collections
+cc_articles_collection = chroma_client.create_collection(name="cc_articles")
+ccp_articles_collection = chroma_client.create_collection(name="ccp_articles")
+ccrp_articles_collection = chroma_client.create_collection(name="ccrp_articles")
 
-# Add data to Chroma DB from the CSV
-filepath = "articles.csv"
-documents, metadatas, ids = read_csv_data(filepath)
-collection.add(documents=documents, metadatas=metadatas, ids=ids)
+# Add data to Chroma DB from the SQLite DB
+db_name = "la_laws.db"
+tables = ["cc_articles", "ccp_articles", "ccrp_articles"]
+collections = [cc_articles_collection, ccp_articles_collection, ccrp_articles_collection]
+
+for table, collection in zip(tables, collections):
+    documents, metadatas, ids = read_db_data(db_name, table)
+    collection.add(documents=documents, metadatas=metadatas, ids=ids)
 
 print('Done!')
+
 

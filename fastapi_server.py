@@ -2,7 +2,7 @@ from fastapi import FastAPI, WebSocket, HTTPException, status, Depends
 from pydantic import BaseModel
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.middleware.cors import CORSMiddleware
-from atticus import PersonalityBot
+from lexmagic import PersonalityBot
 
 
 app = FastAPI()
@@ -26,12 +26,11 @@ async def chat(websocket: WebSocket):
     await websocket.accept()
     data = await websocket.receive_json()
     try:
-        followup_question, need_more_info = bot.chat_completion(data['text'])
-        if need_more_info == "NEED_MORE_INFO":
-            await websocket.send_json({"response": followup_question, "documents": need_more_info})
+        output, top_10_results = bot.chat_completion(data['text'])
+        if top_10_results == "NEED_MORE_INFO":
+            await websocket.send_json({"response": output, "documents": top_10_results})
             data = await websocket.receive_json()
-            followup_question, need_more_info = bot.chat_completion(data['text'])
-        await websocket.send_json({"response": followup_question, "documents": need_more_info})
+        await websocket.send_json({"response": output, "documents": top_10_results})
     except Exception as e:
         print(f"Error: {e}")  # Log the original error message
         await websocket.send_json({"error": str(e)})
