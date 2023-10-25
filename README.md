@@ -1,6 +1,6 @@
-# Atticus
+# LexMagic
 
-Atticus is a legal answering service that grounds its answers in web searches, legal statutes and case law using vector embeddings such that its responses are more reliable than a typical AI chatbot.
+LexMagic is a legal answering service that grounds its answers in web searches, legal statutes and case law using vector embeddings such that its responses are more reliable than a typical AI chatbot.
 
 Atticus is a work in progress and likely has many bugs. Its answers are not to be trusted nor do they qualify as legal advice. Always consult a licensed attorney for professinoal legal advice.
 
@@ -21,13 +21,13 @@ What things you need to install the software and how to install them:
 1. **Clone the repository**
 
     ```sh
-    git clone https://github.com/halfprice06/atticus
+    git clone https://github.com/halfprice06/lexmagic
     ```
 
 2. **Navigate to the project directory**
 
     ```sh
-    cd atticus
+    cd legmagic
     ```
 
 3. **Set up a virtual environment** (optional but recommended)
@@ -61,7 +61,7 @@ What things you need to install the software and how to install them:
 1. **In a new terminal window, navigate to the webpage directory**
 
     ```sh
-    cd atticus/webpage
+    cd lexmagic/webpage
     ```
 
 2. **Run a local HTTP server**
