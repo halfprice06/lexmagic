@@ -2,7 +2,7 @@
 
 LexMagic is a legal answering service that grounds its answers in web searches, legal statutes and case law using vector embeddings such that its responses are more reliable than a typical AI chatbot.
 
-Atticus is a work in progress and likely has many bugs. Its answers are not to be trusted nor do they qualify as legal advice. Always consult a licensed attorney for professinoal legal advice.
+LexMagic is a work in progress and likely has many bugs. Its answers are not to be trusted nor do they qualify as legal advice. Always consult a licensed attorney for professinoal legal advice.
 
 ## Getting Started
 

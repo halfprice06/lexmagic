@@ -227,6 +227,11 @@ button:hover {
 .query-section {
     text-align: center;
 }
+
+#question {
+    align-self: center;
+}
+
 .directory-header {
     text-align: center;
 }
