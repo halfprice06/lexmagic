@@ -200,7 +200,8 @@ class PersonalityBot:
                         6. If the answer does not appear to be in the vector embeddings results, you don't have to mention any specific code articles.
                         7. DO NOT ASSUME THAT JUST BECAUSE YOU ARE GIVEN A LAW FOR CONTEXT IT IS RELEVANT TO THE USER'S QUESTION.
                         8. Always use inline citations in the following format 'Explanatory sentence. La. C.C. art. 123' Don't put your citations in parentheses.
-                        9. Do not cite to the raw GPT4 response, it often contains incorrect statements. Its only provided for reference.""" },
+                        9. Do not cite to the raw GPT4 response, it often contains incorrect statements. Its only provided for reference.
+                        10. Return your response in markdown formatting. Add the end of your response create a list of your citations.""" },
 
             {"role": "assistant", "content": f"Raw ChatPGT Response without help of vector embedding: \n\n {raw_response} \n\n Internet Results: \n\n {internet_reply}  \n\n Vector Results: \n\n {vector_output}"}
         ]

@@ -28,11 +28,16 @@ async function submitQuery() {
         if (data.documents === "NEED_MORE_INFO") {
             askButton.classList.remove('button-loading');
             // Prompt the user for more information
-            document.getElementById('output').innerText = data.response;
+            document.getElementById('output').innerHTML = data.response;
             // Send the updated question to the server
             socket.send(JSON.stringify({ text: question }));
         } else {
-            document.getElementById('output').innerText = data.response;
+            console.log(typeof data.response); // should print "string"
+            console.log(data.response); // should print the markdown string
+            console.log(marked); // should print the function definition
+            console.log(marked.parse("# Hello\nThis is a test")); // should print HTML string
+            console.log(marked); // should print the function definition
+            document.getElementById('output').innerHTML = marked.parse(data.response);
             document.getElementById('directory').innerText = data.documents.join('\n\n\n');  // Display the top 10 results
         }
         askButton.classList.remove('button-loading');  // Remove loading animation

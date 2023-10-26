@@ -3,7 +3,7 @@ nav ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    border: 5px solid #1a1a1a; /* Add thick red border */
+    border: 5px solid #c3faff; /* Add thick red border */
     border-radius: 0; /* Make the border rounded to form a square with rounded corners */
     background-color: #268da6;
 }
