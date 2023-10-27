@@ -54,7 +54,6 @@ class PersonalityBot:
         
         functions_used = []
 
-        reply = ""
         top_10_results = []  # Initialize top_10_results here
                     
         classifier_completion = openai.ChatCompletion.create(
