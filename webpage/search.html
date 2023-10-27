@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>LexMagic</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/typesense@1/dist/typesense.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@algolia/autocomplete-theme-classic"/>
+
+
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="logo-section">
+            <img id="logo" src="logo.png" alt="LexMagic Logo">
+        </div>
+        <div class="container">
+            <div class="search-panel">
+                <div id="autocomplete"></div>
+            </div>
+        
+        </div>
+        <div class="response-section">
+            <h2>Answer</h2>
+            <p id="output">Your answer will appear here.</p>
+            <div class="thumbs">
+                <button onclick="thumbsUp()">👍</button>
+                <button onclick="thumbsDown()">👎</button>
+            </div>
+        </div>
+        <div class="documents-section">
+            <h2></h2>
+            <div class="directory_toggle">
+                <button id="openArticles">Show Relevant Law</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>© 2023 LexMagic. All rights reserved.</p>
+    </footer>
+    <script>
+        let typesenseClient = new Typesense.Client({
+            'nearestNode': {'host': 'qtg5aekc2iosjh93p-1.a1.typesense.net', 'port': '443', 'protocol': 'https'},
+            'nodes': [
+                {'host': 'qtg5aekc2iosjh93p-1.a1.typesense.net', 'port': '443', 'protocol': 'https'},
+                {'host': 'qtg5aekc2iosjh93p-2.a1.typesense.net', 'port': '443', 'protocol': 'https'},
+                {'host': 'qtg5aekc2iosjh93p-3.a1.typesense.net', 'port': '443', 'protocol': 'https'},
+            ],
+            'apiKey': '8hLCPSQTYcBuK29zY5q6Xhin7ONxHy99',
+            'connectionTimeoutSeconds': 2
+        })
+    
+    
+        const {autocomplete} = window['@algolia/autocomplete-js'];
+        autocomplete({
+            container: '#autocomplete',
+            placeholder: 'Search for cell phones and accessories. Eg: Apple, charger',
+            async getSources({query}) {
+                const results = await typesenseClient.collections('products').documents().search({
+                    q: query,
+                    query_by: 'name',
+                    highlight_full_fields: 'name'
+                })
+    
+                return [
+                    {
+                        sourceId: 'predictions',
+                        getItems() {
+                            return results.hits;
+                        },
+                        getItemInputValue({item}) {
+                            return item.document.name;
+                        },
+                        templates: {
+                            item({ item, html }) {
+                                // html is from the `htm` package. Docs: https://github.com/developit/htm
+    
+                                // Get the highlighted HTML fragment from Typesense results
+                                const html_fragment = html`${item.highlights.find(h => h.field === 'name' || {}).value || item.document['name']}`
+    
+                                // Send the html_fragment to `html` tagged template
+                                // Reference: https://github.com/developit/htm/issues/226#issuecomment-1205526098
+                                return html`<div dangerouslySetInnerHTML=${{ __html: html_fragment }}></div>`
+                            },
+                            noResults() {
+                                return 'No results found.';
+                            },
+                        },
+                    },
+                ];
+            },
+        });
+    </script>
+    <script src="scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it-footnote/3.0.3/markdown-it-footnote.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.2/markdown-it.min.js"></script>
+</body>
+</html>
