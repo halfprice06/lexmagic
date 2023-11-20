@@ -255,3 +255,12 @@ footer {
     text-align: center;
     z-index: 0;
 }
+
+.response-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 10px 0;
+    box-shadow: 0 0 10px #ccc;
+    background-color: #ead6d6;
+    color: black;
+}

@@ -1,0 +1,9 @@
+
+{% for response in responses %}
+    <div class="response-box">
+        <h1>{{ response.title }}</h1>
+        {% for paragraph in response.paragraphs %}
+            <p>{{ paragraph }}</p>
+        {% endfor %}
+    </div>
+{% endfor %}

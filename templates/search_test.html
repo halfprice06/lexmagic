@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <title>LexMagic</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://unpkg.com/htmx.org"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css" rel="stylesheet">
 
 </head>
 <body>
@@ -17,18 +19,14 @@
     </nav>
     <div class="container">
         <div class="logo-section">
-            <img id="logo" src="logo.png" alt="LexMagic Logo">
+            <img id="logo" src="/static/logo.png" alt="LexMagic Logo">
         </div>
         <div class="query-section">
-            <input type="text" id="question" placeholder="Enter your legal question here...">
-            <div class= "ask_button">
-                <button id="openLawSelector">Choose Laws to Search</button>
-                <button id="askButton" onclick="submitQuery()">Submit</button>            </div>
-            <div id="progress-bar" style="display: none; height: 20px; width: 0; background-color: #268da6;"></div> <!-- Progress bar -->
+            <input type="text" name="query" id="question" hx-post="/vector_search" hx-target="#output" hx-swap="innerHTML" hx-trigger="keyup" placeholder="Enter your legal question here...">
         </div>
         <div class="response-section">
             <h2>Answer</h2>
-            <p id="output">Your answer will appear here.</p>
+            <p id="output" class="text-black">Your answer will appear here.</p>
             <div class="thumbs">
                 <button onclick="thumbsUp()">👍</button>
                 <button onclick="thumbsDown()">👎</button>
@@ -40,6 +38,7 @@
                 <button id="openArticles">Show Relevant Law</button>
             </div>
         </div>
+
     </div>
     <div class="directory-section">
         <button id="closeArticles"> X </button>
@@ -70,9 +69,5 @@
     <footer>
         <p>© 2023 LexMagic. All rights reserved.</p>
     </footer>
-    <script src="scripts.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it-footnote/3.0.3/markdown-it-footnote.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.2/markdown-it.min.js"></script>
 </body>
 </html>

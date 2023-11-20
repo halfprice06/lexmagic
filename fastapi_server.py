@@ -1,11 +1,20 @@
-from fastapi import FastAPI, WebSocket, HTTPException, status, Depends
+from fastapi import FastAPI, WebSocket, HTTPException, status, Depends, Request, Form
 from pydantic import BaseModel
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from lexmagic import PersonalityBot
+from vector_search_cc import vector_search_civil_code
+
 
 
 app = FastAPI()
+
+templates = Jinja2Templates(directory="templates")  # Assuming your templates are in a directory named "templates"
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -19,6 +28,9 @@ app.add_middleware(
 
 class Prompt(BaseModel):
     text: str
+
+class Query(BaseModel):
+    question: str
 
 @app.websocket("/ws")
 async def chat(websocket: WebSocket):
@@ -46,3 +58,36 @@ async def token(form_data: OAuth2PasswordRequestForm = Depends()):
 async def read_users_me(token: str = Depends(oauth2_scheme)):
     # Use the token to get user information.
     return {"token": token}
+
+@app.post("/vector_search", response_class=HTMLResponse)
+async def vector_search(request: Request, query: str = Form(...)):
+    print(query)
+    _, top_articles = vector_search_civil_code(query, collections=['cc_articles', 'ccp_articles', 'ccrp_articles'], top_n_number=5)
+    
+    formatted_responses = []
+    for article in top_articles:
+        # Check if the article can be split into title and content
+        if "\n" in article:
+            title, content = article.split("\n", 1)
+        else:
+            title = article
+            content = ""
+        
+        # Further split the content into paragraphs
+        paragraphs = content.split("\n")
+        
+        # Remove any empty strings from the list of paragraphs
+        paragraphs = [paragraph for paragraph in paragraphs if paragraph]
+        
+        # Format the response
+        formatted_response = {
+            "title": title,
+            "paragraphs": paragraphs
+        }
+        formatted_responses.append(formatted_response)
+    
+    return templates.TemplateResponse("response.html", {"request": request, "responses": formatted_responses})
+
+@app.get("/", response_class=HTMLResponse)
+async def root(request: Request):
+    return templates.TemplateResponse("search_test.html", {"request": request})

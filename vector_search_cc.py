@@ -1,23 +1,9 @@
+import chromadb
+import logging
+
 def vector_search_civil_code(query, collections=['cc_articles', 'ccp_articles', 'ccrp_articles'], top_n_number=10):
-    import chromadb
-    import sqlite3
-    import logging
 
     logging.basicConfig(level=logging.ERROR)
-
-    # Create a new SQLite database and table if they don't exist
-    conn = sqlite3.connect('results.db')
-    c = conn.cursor()
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS results (
-            id INTEGER,
-            content TEXT,
-            source TEXT,
-            distance REAL,
-            query TEXT
-        )
-    ''')
-    conn.commit()
 
     # Initialize Chroma Client and load existing database
     chroma_client = chromadb.PersistentClient("la_laws_db")
@@ -44,13 +30,6 @@ def vector_search_civil_code(query, collections=['cc_articles', 'ccp_articles', 
         for idx, doc, meta, dist in zip(ids_list, documents_list, metadatas_list, distances_list):
             # Add the current article to the all_articles list
             all_articles.append((dist, doc))
-
-            # Insert the result into the SQLite database
-            c.execute('''
-                INSERT INTO results (id, content, source, distance, query)
-                VALUES (?, ?, ?, ?, ?)
-            ''', (idx, doc, meta.get('title'), dist, query))
-        conn.commit()
 
     # Sort all_articles by distance and take the top_n_number of articles
     all_articles.sort()
