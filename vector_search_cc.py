@@ -21,13 +21,11 @@ def vector_search_civil_code(query, collections=['cc_articles', 'ccp_articles', 
         results = collection.query(query_texts=[query], n_results=top_n_number)
 
         # Extract individual lists
-        ids_list = results.get('ids', [])[0]  # Extracting the first list from the 'ids'
         documents_list = results.get('documents', [])[0]  # Extracting the first list from the 'documents'
-        metadatas_list = results.get('metadatas', [])[0]  # Extracting the first list from the 'metadatas'
         distances_list = results.get('distances', [])[0]  # Extracting the first list from the 'distances'
 
         # Loop through the extracted lists
-        for idx, doc, meta, dist in zip(ids_list, documents_list, metadatas_list, distances_list):
+        for doc, dist in zip(documents_list, distances_list):
             # Add the current article to the all_articles list
             all_articles.append((dist, doc))
 

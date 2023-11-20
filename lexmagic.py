@@ -11,7 +11,7 @@ from llm_functions import *
 
 os.system('cls' if os.name == 'nt' else 'clear')
 
-class PersonalityBot:
+class LawBot:
     def __init__(self, config_file="config.yaml"):
         self.config_file = config_file
 
@@ -21,32 +21,13 @@ class PersonalityBot:
         
         # Set API keys from the config file
         self.api_key_openai = config['api_keys']['openai']
-        self.api_key_elevenlabs = config['api_keys']['elevenlabs']
-        
+                
         # Set default settings from the config file
         self.model = config['settings']['model']
-        self.text_to_speech = config['settings']['text_to_speech'] == 'True'
         self.persona = config['settings']['persona']
         self.voice = config['settings']['voice']
 
-        self.conversation_history = []
-
         openai.api_key = self.api_key_openai
-
-        self.prompt_tokens = 0
-        self.tokens_in_function_response = 0
-
-    def load_user_info(self):
-        user_info_path = "user_info.yaml"
-        if os.path.exists(user_info_path):
-            with open(user_info_path, 'r') as file:
-                user_info = yaml.safe_load(file)
-            return user_info
-        else:
-            # create a default user_info.yaml file in the current directory               
-
-            return {}
-
         
     def chat_completion(self, prompt: str, extra_context_from_user: str = ""):
 
@@ -223,15 +204,3 @@ class PersonalityBot:
             print('\033[92m' + "Function arguments: " + str(func_info["arguments"]) + '\033[0m' + "\n")
 
         return final_reply, top_10_results
-
-
-if __name__ == "__main__":
-
-    bot = PersonalityBot()
-
-    while True:
-        try:
-            bot.run()
-        except Exception as e:
-            print(f"Error encountered: {e}. Restarting bot in 5 seconds...")
-            time.sleep(5)

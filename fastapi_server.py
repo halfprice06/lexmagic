@@ -5,7 +5,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from lexmagic import PersonalityBot
+from lexmagic import LawBot
 from vector_search_cc import vector_search_civil_code
 
 
@@ -34,7 +34,7 @@ class Query(BaseModel):
 
 @app.websocket("/ws")
 async def chat(websocket: WebSocket):
-    bot = PersonalityBot()
+    bot = LawBot()
     await websocket.accept()
     data = await websocket.receive_json()
     try:
@@ -61,6 +61,8 @@ async def read_users_me(token: str = Depends(oauth2_scheme)):
 
 @app.post("/vector_search", response_class=HTMLResponse)
 async def vector_search(request: Request, query: str = Form(...)):
+    if not query:
+        return HTMLResponse(content="<div> Your Answer Will Appear here </div>")
     print(query)
     _, top_articles = vector_search_civil_code(query, collections=['cc_articles', 'ccp_articles', 'ccrp_articles'], top_n_number=5)
     
@@ -90,4 +92,8 @@ async def vector_search(request: Request, query: str = Form(...)):
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    return templates.TemplateResponse("search_test.html", {"request": request})
+    return templates.TemplateResponse("home.html", {"request": request})
+
+@app.get("/search", response_class=HTMLResponse)
+async def root(request: Request):
+    return templates.TemplateResponse("search.html", {"request": request})
