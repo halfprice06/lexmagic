@@ -105,4 +105,4 @@ async def root(request: Request):
 
 @app.get("/magicsearch", response_class=HTMLResponse)
 async def root(request: Request):
-    return templates.TemplateResponse("search.html", {"request": request})
+    return templates.TemplateResponse("magicsearch.html", {"request": request})
