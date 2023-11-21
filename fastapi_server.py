@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from typing import Optional
 from lexmagic import LawBot
 from vector_search_cc import vector_search_civil_code
 
@@ -62,7 +63,7 @@ async def read_users_me(token: str = Depends(oauth2_scheme)):
 import re
 
 @app.post("/vector_search", response_class=HTMLResponse)
-async def vector_search(request: Request, query: str = Form(...)):
+async def vector_search(request: Request, query: Optional[str] = Form(None)):
     if not query:
         return HTMLResponse(content="<div> Your Answer Will Appear here </div>")
     print(query)
@@ -79,6 +80,9 @@ async def vector_search(request: Request, query: str = Form(...)):
         
         # Replace single newline characters followed by a capital letter with two newline characters
         content = re.sub(r'\n([A-Z])', r'\n\n\1', content)
+
+        # Replace '(1)' pattern with two newline characters and a tab, regardless of what precedes it
+        content = re.sub(r'\((\d)\)', r'\n\n&emsp;&emsp;(\1)', content)
         
         # Further split the content into paragraphs
         paragraphs = content.split("\n\n")  # Split on two consecutive newline characters
@@ -97,8 +101,8 @@ async def vector_search(request: Request, query: str = Form(...)):
 
 @app.get("/", response_class=HTMLResponse)
 async def root(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request})
+    return templates.TemplateResponse("search.html", {"request": request})
 
-@app.get("/search", response_class=HTMLResponse)
+@app.get("/magicsearch", response_class=HTMLResponse)
 async def root(request: Request):
     return templates.TemplateResponse("search.html", {"request": request})
