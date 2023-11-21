@@ -23,19 +23,20 @@ def vector_search_civil_code(query, collections=['cc_articles', 'ccp_articles', 
         # Extract individual lists
         documents_list = results.get('documents', [])[0]  # Extracting the first list from the 'documents'
         distances_list = results.get('distances', [])[0]  # Extracting the first list from the 'distances'
+        metadatas_list = results.get('metadatas', [])[0] # Extracting the first list from the 'metadatas'
 
         # Loop through the extracted lists
-        for doc, dist in zip(documents_list, distances_list):
+        for doc, dist, meta in zip(documents_list, distances_list, metadatas_list):
             # Add the current article to the all_articles list
-            all_articles.append((dist, doc))
+            all_articles.append((dist, doc, meta))
 
     # Sort all_articles by distance and take the top_n_number of articles
     all_articles.sort()
     top_articles = all_articles[:top_n_number]
 
     # Prepare the output string with top_articles
-    for dist, article in top_articles:
+    for dist, article, meta in top_articles:
         output += f"{article}\n\n"
 
-    return output, [article for _, article in top_articles]
+    return output, [(article, meta) for _, article, meta in top_articles]
 

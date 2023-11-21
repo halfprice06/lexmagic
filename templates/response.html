@@ -1,8 +1,15 @@
 {% for response in responses %}
-    <div class="p-6 max-w-6xl mx-auto bg-white rounded-xl shadow-md space-x-4 mb-4">
-        <h1 class="text-xl font-semibold text-center">{{ response.title }}</h1>
-        {% for paragraph in response.paragraphs %}
-            <p class="text-gray-500 mb-4 text-justify">{{ paragraph|safe }}</p>
-        {% endfor %}
+    <div class="flex justify-between p-2 max-w-6xl mx-auto bg-white rounded-xl shadow-md space-x-4 mb-4">
+        <button class="self-stretch bg-purple-700 hover:bg-purple-900 text-white font-bold py-1 px-2 rounded shadow text-2xl">←</button>
+        <div class="flex flex-col justify-start flex-grow">
+            <h1 class="text-xl font-semibold text-center">{{ response.title }}</h1>
+            {% for paragraph in response.paragraphs %}
+                <p class="text-gray-500 mb-4 text-justify">{{ paragraph|safe }}</p>
+            {% endfor %}
+            <div class="text-gray-500 mb-4 text-justify">
+                <strong>URL:</strong> <a class="text-purple-700" href="{{ response.metadata.url }}">{{ response.metadata.url }}</a>
+            </div>
+        </div>
+        <button class="self-stretch bg-purple-700 hover:bg-purple-900 text-white font-bold py-1 px-2 rounded shadow text-2xl">→</button>
     </div>
 {% endfor %}

@@ -70,7 +70,7 @@ async def vector_search(request: Request, query: Optional[str] = Form(None)):
     _, top_articles = vector_search_civil_code(query, collections=['cc_articles', 'ccp_articles', 'ccrp_articles'], top_n_number=5)
     
     formatted_responses = []
-    for article in top_articles:
+    for (article, meta) in top_articles:
         # Check if the article can be split into title and content
         if "\n" in article:
             title, content = article.split("\n", 1)
@@ -93,7 +93,8 @@ async def vector_search(request: Request, query: Optional[str] = Form(None)):
         # Format the response
         formatted_response = {
             "title": title,
-            "paragraphs": paragraphs
+            "paragraphs": paragraphs,
+            "metadata": meta  # Include the metadata
         }
         formatted_responses.append(formatted_response)
     
