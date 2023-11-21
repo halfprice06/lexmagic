@@ -10,11 +10,11 @@ def read_db_data(db_name, table_name):
 
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
-    cursor.execute(f"SELECT * FROM {table_name}")
+    cursor.execute(f'SELECT * FROM "{table_name}"')
 
     for row in cursor.fetchall():
-        # Concatenate article number, title and content
-        document = f"{row[0]} {row[2]} {row[3]}"
+        # Concatenate table name and content
+        document = f"{table_name} \n\n {row[3]}"
         documents.append(document)
         title = row[2] if row[2] is not None else "No title"
         metadatas.append({"article_title": title, "url": row[1]})
@@ -32,7 +32,7 @@ ccrp_articles_collection = chroma_client.create_collection(name="ccrp_articles")
 
 # Add data to Chroma DB from the SQLite DB
 db_name = "la_laws.db"
-tables = ["cc_articles", "ccp_articles", "ccrp_articles"]
+tables = ["Louisiana Civil Code", "Louisiana Code of Civil Procedure", "Louisiana Code of Criminal Procedure"]
 collections = [cc_articles_collection, ccp_articles_collection, ccrp_articles_collection]
 
 for table, collection in zip(tables, collections):

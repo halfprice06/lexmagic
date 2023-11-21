@@ -1,5 +1,5 @@
 {% for response in responses %}
-    <div class="p-6 max-w-6xl mx-auto bg-white rounded-xl shadow-md space-x-4">
+    <div class="p-6 max-w-6xl mx-auto bg-white rounded-xl shadow-md space-x-4 mb-4">
         <h1 class="text-xl font-semibold text-center">{{ response.title }}</h1>
         {% for paragraph in response.paragraphs %}
             <p class="text-gray-500 mb-4 text-justify">{{ paragraph }}</p>

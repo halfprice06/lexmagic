@@ -59,6 +59,8 @@ async def read_users_me(token: str = Depends(oauth2_scheme)):
     # Use the token to get user information.
     return {"token": token}
 
+import re
+
 @app.post("/vector_search", response_class=HTMLResponse)
 async def vector_search(request: Request, query: str = Form(...)):
     if not query:
@@ -75,8 +77,11 @@ async def vector_search(request: Request, query: str = Form(...)):
             title = article
             content = ""
         
+        # Replace single newline characters followed by a capital letter with two newline characters
+        content = re.sub(r'\n([A-Z])', r'\n\n\1', content)
+        
         # Further split the content into paragraphs
-        paragraphs = content.split("\n")
+        paragraphs = content.split("\n\n")  # Split on two consecutive newline characters
         
         # Remove any empty strings from the list of paragraphs
         paragraphs = [paragraph for paragraph in paragraphs if paragraph]
